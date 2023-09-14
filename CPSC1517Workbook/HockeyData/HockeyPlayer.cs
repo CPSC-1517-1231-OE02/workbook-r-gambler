@@ -1,4 +1,5 @@
 ﻿using Hockey.Data;
+using Util;
 
 namespace Hockey.Data
 {   /// <summary>
@@ -6,6 +7,7 @@ namespace Hockey.Data
     /// </summary>
     public class HockeyPlayer
     {
+        // date types & fields
         private string _birthPlace;
         private DateOnly _dateOfBirth;
         private string _firstName;
@@ -13,20 +15,24 @@ namespace Hockey.Data
         private int _weightPounds;
         private int _heightInInches;
 
+       
         public string BirthPlace {  
             get { 
                 return _birthPlace; 
             } 
-            set {
-                if (String.IsNullOrWhiteSpace(value))
-                {
-                    throw new ArgumentException("Birthplace cannot be NULL or Empty!");
-                }
-                _birthPlace = value;
+            set { // Testing stuff
+                Utilities.Proces(Utilities.IsNullEmptyOrWhiteSpace(value) ? throw new ArgumentException("Birthplace cannot be NULL or Empty!") : _birthPlace = value);
             } 
         }
         public DateOnly DateOfBirth { 
-            get { return _dateOfBirth; } set { } 
+            get { 
+                return _dateOfBirth; 
+            } set {
+                if (Utilities.IsInTheFuture(value)) {
+                    throw new ArgumentException("Date of birth cannot be in the future.");
+                }
+                _dateOfBirth = value;
+            } 
         }
         public string FirstName {
             get
@@ -35,7 +41,7 @@ namespace Hockey.Data
             }
             set
             {
-                if (String.IsNullOrWhiteSpace(value))
+                if (Utilities.IsNullEmptyOrWhiteSpace(value))
                 {
                     throw new ArgumentException("First name cannot be NULL or Empty!");
                 }
@@ -49,14 +55,24 @@ namespace Hockey.Data
             }
             set
             {
-                if (String.IsNullOrWhiteSpace(value))
+                if (Utilities.IsNullEmptyOrWhiteSpace(value))
                 {
                     throw new ArgumentException("Last name cannot be NULL or Empty!");
                 }
                 _lastName = value;
             }
         }
-        public int WeightPounds { get; set; }
+        public int WeightPounds {
+            get {
+                return _weightPounds;
+            }
+            set {
+                if (!Utilities.IsPositive(value)) {
+                    throw new ArgumentException("Weight must be positibe.");
+                }
+                _weightPounds = value;
+            } 
+        }
         public int HeightInInches {
             get
             {
@@ -64,7 +80,7 @@ namespace Hockey.Data
             }
             set
             {
-                if (value <= 0)
+                if (Utilities.IsZeroOrNegative(value))
                 {
                     throw new ArgumentException("Height must be positive");
                 }
