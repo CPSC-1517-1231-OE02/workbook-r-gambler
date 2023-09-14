@@ -20,8 +20,12 @@ namespace Hockey.Data
             get { 
                 return _birthPlace; 
             } 
-            set { // Testing stuff
-                Utilities.Proces(Utilities.IsNullEmptyOrWhiteSpace(value) ? throw new ArgumentException("Birthplace cannot be NULL or Empty!") : _birthPlace = value);
+            set {
+                if (Utilities.IsNullEmptyOrWhiteSpace(value))
+                {
+                    throw new ArgumentException("Birthplace cannot be NULL or Empty!");
+                }  
+                _birthPlace = value;
             } 
         }
         public DateOnly DateOfBirth { 
