@@ -1,23 +1,39 @@
-using Hockey.Data;
-using Xunit.Sdk;
 using FluentAssertions;
+using Hockey.Data;
 
-namespace Hockey.Test 
-{ 
+namespace Hockey.Test
+{
     public class HockeyPlayerTest
     {
+        public HockeyPlayer GenerateTestPlayer()
+        {
+            return new HockeyPlayer();
+        }
+
         [Fact]
-        public void Test1()
+        public void HockeyPlayer_FirstName_ReturnsGoodFirstName()
         {
             // Arrange
-            int a = 1;
-            int b = 1;
-            int actual;
+            HockeyPlayer player = GenerateTestPlayer();
+            const string NAME = "test";
+            player.FirstName = NAME;
+
             // Act
-            actual = a + b;
+            string actual = player.FirstName;
+
             // Assert
-            actual.Should().Be(2);
-            
+            actual.Should().Be(NAME);
+        }
+
+        [Fact]
+        public void HockeyPlayer_FirstName_ThrowsExceptionForEmptyArg()
+        {
+            HockeyPlayer player = GenerateTestPlayer();
+            const string EMPTY_NAME = "";
+
+            Action act = () => player.FirstName = EMPTY_NAME;
+
+            act.Should().Throw<ArgumentException>().WithMessage("First name cannot be NULL or Empty!");
         }
     }
 }
