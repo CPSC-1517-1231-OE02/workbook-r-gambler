@@ -20,7 +20,8 @@ namespace Hockey.Data
             get { 
                 return _birthPlace; 
             } 
-            set {
+            private set 
+            {
                 if (Utilities.IsNullEmptyOrWhiteSpace(value))
                 {
                     throw new ArgumentException("Birthplace cannot be NULL or Empty!");
@@ -31,7 +32,8 @@ namespace Hockey.Data
         public DateOnly DateOfBirth { 
             get { 
                 return _dateOfBirth; 
-            } set {
+            } 
+            private set {
                 if (Utilities.IsInTheFuture(value)) {
                     throw new ArgumentException("Date of birth cannot be in the future.");
                 }
@@ -43,7 +45,7 @@ namespace Hockey.Data
             {
                 return _firstName;
             }
-            set
+            private set
             {
                 if (Utilities.IsNullEmptyOrWhiteSpace(value))
                 {
@@ -57,7 +59,7 @@ namespace Hockey.Data
             {
                 return _lastName;
             }
-            set
+            private set
             {
                 if (Utilities.IsNullEmptyOrWhiteSpace(value))
                 {
@@ -70,7 +72,8 @@ namespace Hockey.Data
             get {
                 return _weightPounds;
             }
-            set {
+            private set 
+            {
                 if (!Utilities.IsPositive(value)) {
                     throw new ArgumentException("Weight must be positibe.");
                 }
@@ -82,7 +85,7 @@ namespace Hockey.Data
             {
                 return _heightInInches;
             }
-            set
+            private set
             {
                 if (Utilities.IsZeroOrNegative(value))
                 {
@@ -94,20 +97,7 @@ namespace Hockey.Data
         public Position Position { get; set; }
         public Shot Shot { get; set; }
 
-        // Default constructor
-        
-        public HockeyPlayer()
-        {
-            _firstName = string.Empty; 
-            _lastName = string.Empty;
-            _birthPlace = string.Empty;
-            _dateOfBirth = new DateOnly();
-            _weightPounds = 0;
-            _heightInInches = 0;
-            Position = Position.Defense;
-            Shot = Shot.Left;
-        }
-
+        // Greedy Constructor
         public HockeyPlayer(string birthPlace, DateOnly dateOfBirth, 
             string firstName, string lastName, int weightPounds, 
             int heightInInches, 
@@ -122,6 +112,12 @@ namespace Hockey.Data
             HeightInInches = heightInInches;
             Position = position;
             Shot = shot;
+        }
+
+        // Overide ToString
+        public override string ToString()
+        {
+            return $"{FirstName},{LastName}....";
         }
     }
 }

@@ -5,6 +5,33 @@ namespace UtilitiesTestProject
 {
     public class UtilitiesTest
     {
+        [Theory]
+        [InlineData(1)]
+        [InlineData(1.0D)]
+        [InlineData("1.0")]
+        public void Utilities_IsPositive_ReturnsTrueForPositive(object value)
+        {
+            // Arrange
+            bool actual;
+
+            // Act
+            if (value.GetType() == typeof(int))
+            {
+                actual = Utilities.IsPositive((int)value);
+            } 
+            else if (value.GetType() == typeof(double))
+            {
+                actual = Utilities.IsPositive((double)value);
+            }
+            else
+            {
+                actual = Utilities.IsPositive(Convert.ToDecimal(value));
+            }
+
+            // Assert
+            actual.Should().BeTrue();
+        }
+
         // DateOnly data generator
         public static IEnumerable<object[]> GenerateIsInTheFutureTestData()
         {
