@@ -5,35 +5,35 @@ namespace Hockey.Test
 {
     public class HockeyPlayerTest
     {
-        public HockeyPlayer GenerateTestPlayer()
+        // constants for a test player
+        const string FirstName = "Connor";
+        const string LastName = "Brown";
+        const string BirthPlace = "Toronto, ON, CAN";
+        const int HeightInInches = 72;
+        const int WeightInPounds = 188;
+        const int JerseyNumber = 28;
+        const Position PlayerPosition = Position.Defense;
+        const Shot PlayerShot = Shot.Left;
+        static readonly DateOnly DateOfBirth = new DateOnly(1994, 01, 14);
+        const string ToStringValue = $"{FirstName} {LastName}";
+        readonly int Age = (DateOnly.FromDateTime(DateTime.Now).DayNumber - DateOfBirth.DayNumber)/365;
+
+        public HockeyPlayer CreateTestHockeyPlayer() 
         {
-            return new HockeyPlayer();
+            return new HockeyPlayer(BirthPlace, DateOfBirth,
+            FirstName, LastName, WeightInPounds,
+            HeightInInches);
         }
 
         [Fact]
-        public void HockeyPlayer_FirstName_ReturnsGoodFirstName()
-        {
-            // Arrange
-            HockeyPlayer player = GenerateTestPlayer();
-            const string NAME = "test";
-            player.FirstName = NAME;
+        public void HockeyPLayer_ToString_ReturnCorrectValue() 
+        { 
+            HockeyPlayer player = CreateTestHockeyPlayer();
+            string actual;
 
-            // Act
-            string actual = player.FirstName;
+            actual = player.ToString();
 
-            // Assert
-            actual.Should().Be(NAME);
-        }
-
-        [Fact]
-        public void HockeyPlayer_FirstName_ThrowsExceptionForEmptyArg()
-        {
-            HockeyPlayer player = GenerateTestPlayer();
-            const string EMPTY_NAME = "";
-
-            Action act = () => player.FirstName = EMPTY_NAME;
-
-            act.Should().Throw<ArgumentException>().WithMessage("First name cannot be NULL or Empty!");
+            actual.Should().Be(ToStringValue);
         }
     }
 }
