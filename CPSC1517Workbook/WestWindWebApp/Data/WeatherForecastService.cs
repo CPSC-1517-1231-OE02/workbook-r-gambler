@@ -1,4 +1,4 @@
-namespace WestWindWebApp.Data
+namespace WestWindWebapp.Data
 {
 	public class WeatherForecastService
 	{
