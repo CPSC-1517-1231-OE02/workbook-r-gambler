@@ -2,7 +2,16 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using WestWindWebapp.Data;
 
+using WestWindSystem;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+var connString = builder.Configuration.GetConnectionString("WWDB");
+
+builder.Services.WWBackEndDependencies(options =>
+	options.UseSqlServer(connString)
+); 
 
 // Add services to the container.
 builder.Services.AddRazorPages();

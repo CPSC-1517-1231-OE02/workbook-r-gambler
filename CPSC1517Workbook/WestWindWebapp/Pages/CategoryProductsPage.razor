@@ -1,0 +1,93 @@
+﻿@page "/category-products"
+@page "/category-products/{CateId}"
+
+@using WestWindSystem.BLL;
+@using WestWindSystem.Entities;
+
+<h3>CategoryProductsPage</h3>
+
+<fieldset class="p-1 mb-3">
+	<legend>Category Selection</legend>
+	<div class="align-items-center">
+		<div class="cols-12">
+			<label class="visually-hidden" for="category">Category:</label>
+			<select class="form-select" id="category" @bind="CateId">
+				<option value="-1" selected disabled>Select a Category</option>
+				@if (Categories != null)
+				{
+					@foreach (var c in Categories)
+					{
+						<option value="@c.CategoryId">@c.Description</option>
+					}
+				}
+			</select>
+		</div>
+		<div class="col-12">
+			<button class="btn btn-primary" @onclick="HandleCategSelected">Get Products</button>
+		</div>
+	</div>
+</fieldset>
+
+@if (Products != null)
+{
+	<table>
+		<thead>
+			<tr>
+				<th>Product Id</th>
+				<th>Name</th>
+				<th>Available</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach(var p in Products)
+			{
+				<tr>
+					<td>@p.ProductId</td>
+					<td>@p.ProductName</td>
+					<td>@p.Discontinued</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+
+@code {
+
+	[Inject]
+	CategoriesServices? CategoryServices { get; set; }
+
+	[Inject]
+	ProductServices? ProductServices { get; set; }
+
+	[Inject]
+	NavigationManager NaviManager { get; set; }
+
+	public List<Category>? Categories { get; set; } = null;
+
+	public List<Product>? Products { get; set; } = null;
+
+	[Parameter]
+	public string? CateId { get; set; } = null;
+
+	protected override void OnInitialized()
+	{
+		Categories = CategoryServices.GetAllCategories();
+
+		if(CateId != null)
+		{
+			Products = ProductServices.GetAllProductsInSelectedCategory(int.Parse(CateId));
+		}
+
+		base.OnInitialized();
+	}
+
+	private void HandleCategSelected()
+	{
+		if(CateId != null)
+		{
+			Products = ProductServices.GetAllProductsInSelectedCategory(int.Parse(CateId));
+			NaviManager.NavigateTo($"/category-products/{CateId}");
+		}
+	}
+
+}
